@@ -1,10 +1,16 @@
-import { COUNTRIES } from "@/lib/pitch-tracker/constants";
+"use client";
 
-interface PitchTrackerFiltersProps {
+import { COUNTRIES } from "@/lib/pitch-tracker/constants";
+import type { CountryFilter } from "@/lib/pitch-tracker/types";
+import { FilterPills, InfoBanner, SearchInput } from "@/components/ui";
+import { motion } from "framer-motion";
+import { fadeUp } from "@/lib/motion/variants";
+
+export interface PitchTrackerFiltersProps {
   search: string;
-  country: string;
+  country: CountryFilter;
   onSearchChange: (value: string) => void;
-  onCountryChange: (value: string) => void;
+  onCountryChange: (value: CountryFilter) => void;
 }
 
 export function PitchTrackerFilters({
@@ -14,42 +20,30 @@ export function PitchTrackerFilters({
   onCountryChange,
 }: PitchTrackerFiltersProps) {
   return (
-    <>
-      <div className="mb-4 flex flex-wrap gap-2.5">
-        <input
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={fadeUp}
+      transition={{ duration: 0.45, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+    >
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <SearchInput
           value={search}
-          onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="🔍  Search agency, CEO or focus..."
-          className="min-w-[200px] flex-1 rounded-lg border border-[#1e2a3a] bg-[#131927] px-3.5 py-2 text-[13px] text-slate-200 outline-none focus:border-indigo-500/50"
+          onValueChange={onSearchChange}
+          placeholder="Search agency, CEO or focus..."
         />
-        <div className="flex flex-wrap gap-1.5">
-          {COUNTRIES.map((item) => {
-            const isActive = country === item;
-
-            return (
-              <button
-                key={item}
-                type="button"
-                onClick={() => onCountryChange(item)}
-                className={`cursor-pointer rounded-lg px-3.5 py-2 text-xs font-semibold transition-colors ${
-                  isActive
-                    ? "bg-gradient-to-br from-indigo-500 to-violet-500 text-white"
-                    : "border border-[#1e2a3a] bg-[#131927] text-slate-400 hover:text-slate-200"
-                }`}
-              >
-                {item}
-              </button>
-            );
-          })}
-        </div>
+        <FilterPills
+          options={COUNTRIES}
+          value={country}
+          onChange={onCountryChange}
+        />
       </div>
 
-      <p className="mb-3.5 text-xs text-slate-600">
-        ⚠️ <strong className="text-slate-500">Email note:</strong> CEO personal
-        emails are private. Use LinkedIn (links below) to connect, or check agency
-        website contact pages. Email hints are common patterns — always verify
-        before sending.
-      </p>
-    </>
+      <InfoBanner>
+        <strong>Email note:</strong> CEO personal emails are private. Use
+        LinkedIn (links below) to connect, or check agency website contact pages.
+        Email hints are common patterns — always verify before sending.
+      </InfoBanner>
+    </motion.div>
   );
 }

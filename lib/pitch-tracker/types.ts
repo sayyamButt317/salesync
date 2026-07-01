@@ -28,9 +28,12 @@ export interface PitchTrackerStats {
   closed: number;
 }
 
+export type CountryFilter = "All" | AgencyCountry;
+
 export interface PitchTrackerProps {
   title?: string;
   subtitle?: string;
   agencies?: Agency[];
   showTips?: boolean;
+  activeNavId?: string;
 }

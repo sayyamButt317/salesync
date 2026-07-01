@@ -1,8 +1,10 @@
 import type { Agency, PitchStatus, PitchTrackerStats } from "./types";
 
+import type { CountryFilter } from "@/lib/pitch-tracker/types";
+
 export function filterAgencies(
   agencies: Agency[],
-  country: string,
+  country: CountryFilter,
   search: string,
 ): Agency[] {
   const query = search.toLowerCase();

@@ -12,10 +12,10 @@ export const STATUS_OPTIONS: PitchStatus[] = [
 ];
 
 export const STATUS_COLORS: Record<PitchStatus, string> = {
-  "Not Contacted": "#64748b",
+  "Not Contacted": "#6b7280",
   Pitched: "#3b82f6",
-  Replied: "#f59e0b",
-  "Meeting Booked": "#8b5cf6",
+  Replied: "#f97316",
+  "Meeting Booked": "#7c3aed",
   Closed: "#22c55e",
   "Not Interested": "#ef4444",
 };

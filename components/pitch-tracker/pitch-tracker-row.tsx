@@ -1,11 +1,12 @@
-import {
-  COUNTRY_BADGE_STYLES,
-  STATUS_COLORS,
-  STATUS_OPTIONS,
-} from "@/lib/pitch-tracker/constants";
-import type { Agency, PitchStatus } from "@/lib/pitch-tracker/types";
+"use client";
 
-interface PitchTrackerRowProps {
+import { ExternalLink, Globe, Link2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { CountryBadge, StatusSelect } from "@/components/ui";
+import type { Agency, PitchStatus } from "@/lib/pitch-tracker/types";
+import { tableRow } from "@/lib/motion/variants";
+
+export interface PitchTrackerRowProps {
   agency: Agency;
   index: number;
   status: PitchStatus;
@@ -32,85 +33,64 @@ export function PitchTrackerRow({
   onSaveNote,
   onCancelEditNote,
 }: PitchTrackerRowProps) {
-  const badge = COUNTRY_BADGE_STYLES[agency.country];
-
   return (
-    <tr
-      className={`border-b border-[#131927] ${
-        index % 2 === 0 ? "bg-[#0a0f1a]" : "bg-[#0d1520]"
-      }`}
+    <motion.tr
+      variants={tableRow}
+      className="border-b border-gray-50 transition-colors last:border-b-0 hover:bg-gray-50/70"
     >
-      <td className="px-3 py-2.5 text-[11px] text-slate-600">{index + 1}</td>
-      <td className="px-3 py-2.5">
-        <span
-          className="rounded-full px-2 py-0.5 text-[11px] font-bold"
-          style={{ background: badge.background, color: badge.color }}
-        >
-          {agency.country}
-        </span>
+      <td className="px-4 py-3 text-xs text-gray-400">{index + 1}</td>
+      <td className="px-4 py-3">
+        <CountryBadge country={agency.country} />
       </td>
-      <td className="whitespace-nowrap px-3 py-2.5 font-semibold text-slate-200">
+      <td className="whitespace-nowrap px-4 py-3 font-semibold text-gray-900">
         {agency.name}
       </td>
-      <td className="px-3 py-2.5 text-slate-400">
+      <td className="px-4 py-3">
         <a
           href={agency.ceoLinkedin}
           target="_blank"
           rel="noreferrer"
-          className="text-xs text-blue-400 no-underline hover:underline"
+          className="text-sm font-medium text-blue-600 no-underline hover:underline"
         >
           {agency.ceo}
         </a>
       </td>
-      <td className="max-w-[160px] px-3 py-2.5 text-xs text-slate-400">
+      <td className="max-w-[180px] px-4 py-3 text-xs text-gray-500">
         {agency.focus}
       </td>
-      <td className="px-3 py-2.5">
-        <code className="rounded bg-[#1a1200] px-1.5 py-0.5 text-[11px] text-amber-500">
+      <td className="px-4 py-3">
+        <code className="rounded-md bg-orange-50 px-2 py-0.5 text-[11px] font-medium text-orange-700">
           {agency.emailHint}
         </code>
       </td>
-      <td className="whitespace-nowrap px-3 py-2.5">
-        <a
-          href={`https://${agency.website}`}
-          target="_blank"
-          rel="noreferrer"
-          className="mr-2 text-[11px] text-indigo-300 no-underline hover:underline"
-        >
-          🌐 Web
-        </a>
-        <a
-          href={agency.linkedin}
-          target="_blank"
-          rel="noreferrer"
-          className="text-[11px] text-sky-400 no-underline hover:underline"
-        >
-          in LI
-        </a>
+      <td className="whitespace-nowrap px-4 py-3">
+        <div className="flex items-center gap-2">
+          <a
+            href={`https://${agency.website}`}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1 text-[11px] font-medium text-gray-500 no-underline transition-colors hover:text-violet-600"
+          >
+            <Globe className="h-3.5 w-3.5" />
+            Web
+          </a>
+          <a
+            href={agency.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1 text-[11px] font-medium text-gray-500 no-underline transition-colors hover:text-blue-600"
+          >
+            <Link2 className="h-3.5 w-3.5" />
+            LI
+          </a>
+        </div>
       </td>
-      <td className="px-3 py-2.5">
-        <select
-          value={status}
-          onChange={(event) =>
-            onStatusChange(event.target.value as PitchStatus)
-          }
-          className="cursor-pointer rounded-md px-2 py-1.5 text-[11px]"
-          style={{
-            background: "#0d1520",
-            border: `1px solid ${STATUS_COLORS[status]}44`,
-            color: STATUS_COLORS[status],
-          }}
-        >
-          {STATUS_OPTIONS.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+      <td className="px-4 py-3">
+        <StatusSelect value={status} onChange={onStatusChange} />
       </td>
-      <td className="min-w-[140px] px-3 py-2.5">
+      <td className="min-w-[140px] px-4 py-3">
         {isEditingNote ? (
-          <div className="flex gap-1">
+          <div className="flex gap-1.5">
             <input
               autoFocus
               value={noteDraft}
@@ -119,28 +99,35 @@ export function PitchTrackerRow({
                 if (event.key === "Enter") onSaveNote();
                 if (event.key === "Escape") onCancelEditNote();
               }}
-              className="w-[100px] rounded border border-slate-600 bg-[#0a0f1a] px-1.5 py-1 text-[11px] text-slate-200 outline-none"
+              className="w-[110px] rounded-lg border border-gray-200 bg-white px-2 py-1 text-[11px] text-gray-900 outline-none focus:border-violet-300 focus:ring-2 focus:ring-violet-100"
             />
             <button
               type="button"
               onClick={onSaveNote}
-              className="cursor-pointer rounded bg-indigo-500 px-2 py-1 text-[11px] text-white"
+              className="cursor-pointer rounded-lg bg-violet-600 px-2 py-1 text-[11px] font-medium text-white hover:bg-violet-700"
             >
-              ✓
+              Save
             </button>
           </div>
         ) : (
           <button
             type="button"
             onClick={onStartEditNote}
-            className={`block max-w-[140px] cursor-pointer truncate border-0 bg-transparent p-0 text-left text-[11px] ${
-              note ? "text-slate-400" : "text-slate-600"
+            className={`inline-flex cursor-pointer items-center gap-1 border-0 bg-transparent p-0 text-left text-[11px] font-medium transition-colors hover:text-violet-600 ${
+              note ? "text-gray-600" : "text-gray-400"
             }`}
           >
-            {note || "＋ Add note"}
+            {note ? (
+              <>
+                <ExternalLink className="h-3 w-3 shrink-0" />
+                <span className="max-w-[120px] truncate">{note}</span>
+              </>
+            ) : (
+              "+ Add note"
+            )}
           </button>
         )}
       </td>
-    </tr>
+    </motion.tr>
   );
 }

@@ -1,8 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AppShell } from "@/components/layout";
 import { AGENCIES } from "@/lib/pitch-tracker/agencies";
-import type { PitchStatus, PitchTrackerProps } from "@/lib/pitch-tracker/types";
+import type {
+  CountryFilter,
+  PitchStatus,
+  PitchTrackerProps,
+} from "@/lib/pitch-tracker/types";
 import { computeStats, filterAgencies } from "@/lib/pitch-tracker/utils";
 import { PitchTrackerFilters } from "./pitch-tracker-filters";
 import { PitchTrackerHeader } from "./pitch-tracker-header";
@@ -19,8 +24,9 @@ export function PitchTracker({
   subtitle = DEFAULT_SUBTITLE,
   agencies = AGENCIES,
   showTips = true,
+  activeNavId = "agencies",
 }: PitchTrackerProps) {
-  const [country, setCountry] = useState("All");
+  const [country, setCountry] = useState<CountryFilter>("All");
   const [search, setSearch] = useState("");
   const [statuses, setStatuses] = useState<
     Record<number, PitchStatus | undefined>
@@ -60,30 +66,28 @@ export function PitchTracker({
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0f1a] px-4 py-6 font-sans text-slate-200">
-      <div className="mx-auto max-w-[1100px]">
-        <PitchTrackerHeader title={title} subtitle={subtitle} />
-        <PitchTrackerStatsBar stats={stats} />
-        <PitchTrackerFilters
-          search={search}
-          country={country}
-          onSearchChange={setSearch}
-          onCountryChange={setCountry}
-        />
-        <PitchTrackerTable
-          agencies={filteredAgencies}
-          statuses={statuses}
-          notes={notes}
-          editingNoteId={editingNoteId}
-          noteDraft={noteDraft}
-          onStatusChange={handleStatusChange}
-          onStartEditNote={handleStartEditNote}
-          onNoteDraftChange={setNoteDraft}
-          onSaveNote={handleSaveNote}
-          onCancelEditNote={handleCancelEditNote}
-        />
-        {showTips ? <PitchTrackerTips /> : null}
-      </div>
-    </div>
+    <AppShell activeNavId={activeNavId}>
+      <PitchTrackerHeader title={title} subtitle={subtitle} />
+      <PitchTrackerStatsBar stats={stats} />
+      <PitchTrackerFilters
+        search={search}
+        country={country}
+        onSearchChange={setSearch}
+        onCountryChange={setCountry}
+      />
+      <PitchTrackerTable
+        agencies={filteredAgencies}
+        statuses={statuses}
+        notes={notes}
+        editingNoteId={editingNoteId}
+        noteDraft={noteDraft}
+        onStatusChange={handleStatusChange}
+        onStartEditNote={handleStartEditNote}
+        onNoteDraftChange={setNoteDraft}
+        onSaveNote={handleSaveNote}
+        onCancelEditNote={handleCancelEditNote}
+      />
+      {showTips ? <PitchTrackerTips /> : null}
+    </AppShell>
   );
 }
