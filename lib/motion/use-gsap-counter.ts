@@ -7,6 +7,7 @@ export function useGsapCounter(
   targetValue: number,
   duration = 1.2,
   enabled = true,
+  formatValue?: (value: number) => string,
 ) {
   const ref = useRef<HTMLSpanElement>(null);
   const animatedRef = useRef(false);
@@ -22,7 +23,10 @@ export function useGsapCounter(
       duration: animatedRef.current ? 0.4 : duration,
       ease: "power2.out",
       onUpdate: () => {
-        element.textContent = String(Math.round(obj.value));
+        const rounded = Math.round(obj.value);
+        element.textContent = formatValue
+          ? formatValue(rounded)
+          : String(rounded);
       },
     });
 
@@ -30,7 +34,7 @@ export function useGsapCounter(
     return () => {
       tween.kill();
     };
-  }, [targetValue, duration, enabled]);
+  }, [targetValue, duration, enabled, formatValue]);
 
   return ref;
 }

@@ -1,0 +1,226 @@
+import {
+  Building2,
+  CalendarCheck,
+  DollarSign,
+  Home,
+  MessageCircle,
+  Reply,
+  Send,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+import type {
+  ActivityDataPoint,
+  CampaignReport,
+  ChannelSegment,
+  PerformanceStat,
+  ReplyRateSummary,
+  ReportMetric,
+} from "./types";
+
+export const REPORT_METRICS: ReportMetric[] = [
+  {
+    id: "pitches",
+    label: "Pitches Sent",
+    value: 218,
+    trend: 18,
+    trendDirection: "up",
+    trendLabel: "vs Apr 20 – May 19",
+    icon: Send,
+    iconBg: "#ede9fe",
+    iconColor: "#7c3aed",
+  },
+  {
+    id: "conversations",
+    label: "Conversations",
+    value: 156,
+    trend: 12,
+    trendDirection: "up",
+    trendLabel: "vs Apr 20 – May 19",
+    icon: MessageCircle,
+    iconBg: "#dbeafe",
+    iconColor: "#3b82f6",
+  },
+  {
+    id: "replies",
+    label: "Replies",
+    value: 86,
+    trend: 24,
+    trendDirection: "up",
+    trendLabel: "vs Apr 20 – May 19",
+    icon: Reply,
+    iconBg: "#dcfce7",
+    iconColor: "#22c55e",
+  },
+  {
+    id: "meetings",
+    label: "Meetings Booked",
+    value: 24,
+    trend: 8,
+    trendDirection: "up",
+    trendLabel: "vs Apr 20 – May 19",
+    icon: CalendarCheck,
+    iconBg: "#ffedd5",
+    iconColor: "#f97316",
+  },
+  {
+    id: "deals",
+    label: "Deals Closed",
+    value: 12,
+    trend: 15,
+    trendDirection: "up",
+    trendLabel: "vs Apr 20 – May 19",
+    icon: TrendingUp,
+    iconBg: "#fce7f3",
+    iconColor: "#ec4899",
+  },
+  {
+    id: "revenue",
+    label: "Revenue",
+    value: 48200,
+    trend: 22,
+    trendDirection: "up",
+    trendLabel: "vs Apr 20 – May 19",
+    icon: DollarSign,
+    iconBg: "#cffafe",
+    iconColor: "#06b6d4",
+    formatValue: (value) =>
+      value >= 1000 ? `$${(value / 1000).toFixed(1)}K` : `$${value}`,
+  },
+];
+
+export const ACTIVITY_CHART_DATA: ActivityDataPoint[] = [
+  { label: "May 20", pitches: 42, replies: 18, conversations: 28 },
+  { label: "May 24", pitches: 55, replies: 22, conversations: 35 },
+  { label: "May 28", pitches: 48, replies: 28, conversations: 32 },
+  { label: "Jun 1", pitches: 62, replies: 32, conversations: 45 },
+  { label: "Jun 5", pitches: 58, replies: 38, conversations: 42 },
+  { label: "Jun 9", pitches: 72, replies: 42, conversations: 52 },
+  { label: "Jun 13", pitches: 68, replies: 48, conversations: 48 },
+  { label: "Jun 18", pitches: 78, replies: 52, conversations: 58 },
+];
+
+export const CHANNEL_SEGMENTS: ChannelSegment[] = [
+  { label: "WhatsApp", value: 98, color: "#22c55e" },
+  { label: "Email", value: 62, color: "#3b82f6" },
+  { label: "Instagram", value: 32, color: "#ec4899" },
+  { label: "LinkedIn", value: 18, color: "#0ea5e9" },
+  { label: "Other", value: 8, color: "#9ca3af" },
+];
+
+export const CHANNEL_TOTAL = CHANNEL_SEGMENTS.reduce(
+  (sum, segment) => sum + segment.value,
+  0,
+);
+
+export const TOP_CAMPAIGNS: CampaignReport[] = [
+  {
+    id: "1",
+    name: "Luxury Property Campaign",
+    icon: Home,
+    iconBg: "#ede9fe",
+    iconColor: "#7c3aed",
+    pitchesSent: 64,
+    replies: 28,
+    replyRate: 44,
+    meetings: 8,
+    conversionRate: 12,
+  },
+  {
+    id: "2",
+    name: "Investor Outreach",
+    icon: TrendingUp,
+    iconBg: "#dbeafe",
+    iconColor: "#3b82f6",
+    pitchesSent: 52,
+    replies: 22,
+    replyRate: 42,
+    meetings: 6,
+    conversionRate: 10,
+  },
+  {
+    id: "3",
+    name: "Creator Agency Pitch",
+    icon: Users,
+    iconBg: "#dcfce7",
+    iconColor: "#22c55e",
+    pitchesSent: 48,
+    replies: 18,
+    replyRate: 38,
+    meetings: 5,
+    conversionRate: 8,
+  },
+  {
+    id: "4",
+    name: "TikTok Automation",
+    icon: Send,
+    iconBg: "#ffedd5",
+    iconColor: "#f97316",
+    pitchesSent: 36,
+    replies: 12,
+    replyRate: 33,
+    meetings: 3,
+    conversionRate: 6,
+  },
+  {
+    id: "5",
+    name: "Enterprise Rate Card",
+    icon: Building2,
+    iconBg: "#fce7f3",
+    iconColor: "#ec4899",
+    pitchesSent: 28,
+    replies: 8,
+    replyRate: 29,
+    meetings: 2,
+    conversionRate: 5,
+  },
+];
+
+export const REPLY_RATE_SUMMARY: ReplyRateSummary = {
+  rate: 39.4,
+  trend: 6,
+  trendDirection: "up",
+  trendLabel: "vs last month",
+  chartData: [
+    { label: "May 20", value: 32 },
+    { label: "May 28", value: 35 },
+    { label: "Jun 5", value: 37 },
+    { label: "Jun 13", value: 38 },
+    { label: "Jun 18", value: 39 },
+  ],
+};
+
+export const PERFORMANCE_STATS: PerformanceStat[] = [
+  {
+    id: "open-rate",
+    label: "Open Rate (Email)",
+    value: "62.3%",
+    trend: 4,
+    trendDirection: "up",
+  },
+  {
+    id: "response-time",
+    label: "Response Time",
+    value: "2.4h",
+    trend: 6,
+    trendDirection: "down",
+    invertTrend: true,
+  },
+  {
+    id: "follow-ups",
+    label: "Follow Ups Sent",
+    value: "96",
+    trend: 12,
+    trendDirection: "up",
+  },
+  {
+    id: "unsubscribes",
+    label: "Unsubscribes",
+    value: "3",
+    trend: 25,
+    trendDirection: "down",
+    invertTrend: true,
+  },
+];
+
+export const DATE_RANGE_LABEL = "May 20, 2025 – Jun 18, 2025";

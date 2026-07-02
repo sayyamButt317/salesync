@@ -1,0 +1,180 @@
+import {
+  Bell,
+  Bot,
+  Building2,
+  CreditCard,
+  Globe,
+  Lock,
+  Mail,
+  MessageCircle,
+  Plug,
+  Shield,
+  Sliders,
+  User,
+  Webhook,
+} from "lucide-react";
+import type {
+  IntegrationApp,
+  ProfileFormData,
+  SettingsNavItem,
+  SettingsSectionConfig,
+} from "./types";
+
+export const DEFAULT_PROFILE: ProfileFormData = {
+  fullName: "Sajam J.",
+  email: "sajam@acme.com",
+  phoneCountryCode: "+1",
+  phoneNumber: "(555) 234-5678",
+  timezone: "America/New_York",
+  initials: "SJ",
+};
+
+export const GENERAL_NAV_ITEMS: SettingsNavItem[] = [
+  { id: "profile", label: "Profile & Business", icon: User },
+  { id: "company", label: "Company Details", icon: Building2 },
+  { id: "preferences", label: "Preferences", icon: Sliders },
+  { id: "email", label: "Email Settings", icon: Mail },
+  { id: "whatsapp", label: "WhatsApp Settings", icon: MessageCircle },
+  { id: "ai-agent", label: "AI Agent Settings", icon: Bot },
+  { id: "data-privacy", label: "Data & Privacy", icon: Lock },
+  { id: "api", label: "API & Webhooks", icon: Webhook },
+];
+
+export const INTEGRATION_APPS: IntegrationApp[] = [
+  {
+    id: "whatsapp",
+    name: "WhatsApp",
+    icon: MessageCircle,
+    iconBg: "#dcfce7",
+    iconColor: "#22c55e",
+    connected: true,
+  },
+  {
+    id: "gmail",
+    name: "Gmail",
+    icon: Mail,
+    iconBg: "#fee2e2",
+    iconColor: "#ef4444",
+    connected: true,
+  },
+  {
+    id: "outlook",
+    name: "Outlook",
+    icon: Mail,
+    iconBg: "#dbeafe",
+    iconColor: "#3b82f6",
+    connected: true,
+  },
+  {
+    id: "linkedin",
+    name: "LinkedIn",
+    icon: Globe,
+    iconBg: "#dbeafe",
+    iconColor: "#0ea5e9",
+    connected: true,
+  },
+  {
+    id: "instagram",
+    name: "Instagram",
+    icon: Globe,
+    iconBg: "#fce7f3",
+    iconColor: "#ec4899",
+    connected: true,
+  },
+];
+
+export const SETTINGS_SECTIONS: SettingsSectionConfig[] = [
+  {
+    id: "notifications",
+    title: "Notification Preferences",
+    subtitle: "Choose how you want to be notified",
+    icon: Bell,
+    iconBg: "#ede9fe",
+    iconColor: "#7c3aed",
+    variant: "rows",
+    rows: [
+      { id: "1", label: "Email Notifications" },
+      { id: "2", label: "In-App Notifications" },
+      { id: "3", label: "WhatsApp Notifications" },
+      { id: "4", label: "Task Reminders" },
+    ],
+  },
+  {
+    id: "integrations",
+    title: "Integrations",
+    subtitle: "Connected apps and channels",
+    icon: Plug,
+    iconBg: "#dcfce7",
+    iconColor: "#22c55e",
+    headerAction: { label: "View all", variant: "link" },
+    variant: "integrations",
+  },
+  {
+    id: "ai-agent",
+    title: "AI Agent Settings",
+    subtitle: "Configure your agent behavior",
+    icon: Bot,
+    iconBg: "#ede9fe",
+    iconColor: "#7c3aed",
+    variant: "rows",
+    rows: [
+      { id: "1", label: "Default Tone", value: "Professional" },
+      { id: "2", label: "Response Language", value: "English" },
+      { id: "3", label: "Auto-Reply", value: "Enabled", variant: "success" },
+      { id: "4", label: "Working Hours", value: "9:00 AM – 6:00 PM" },
+    ],
+  },
+  {
+    id: "security",
+    title: "Security",
+    subtitle: "Protect your account",
+    icon: Shield,
+    iconBg: "#dbeafe",
+    iconColor: "#3b82f6",
+    variant: "rows",
+    rows: [
+      { id: "1", label: "Password", actionLabel: "Change Password", variant: "link" },
+      { id: "2", label: "Two-Factor Authentication", value: "Enabled", variant: "success" },
+      { id: "3", label: "Active Sessions", value: "3 Active" },
+      { id: "4", label: "Login History" },
+    ],
+  },
+  {
+    id: "data-privacy",
+    title: "Data & Privacy",
+    subtitle: "Manage your data",
+    icon: Lock,
+    iconBg: "#ffedd5",
+    iconColor: "#f97316",
+    variant: "rows",
+    rows: [
+      { id: "1", label: "Download My Data", actionLabel: "Request", variant: "link" },
+      { id: "2", label: "Delete Account", actionLabel: "Delete", variant: "danger" },
+      { id: "3", label: "Data Retention", value: "30 Days" },
+    ],
+  },
+  {
+    id: "billing",
+    title: "Billing & Plan",
+    subtitle: "Manage subscription and payments",
+    icon: CreditCard,
+    iconBg: "#fee2e2",
+    iconColor: "#ef4444",
+    headerAction: { label: "Manage Billing", variant: "button" },
+    variant: "rows",
+    rows: [
+      { id: "1", label: "Current Plan", value: "Pro Plan" },
+      { id: "2", label: "Next Billing Date", value: "July 12, 2025" },
+      { id: "3", label: "Payment Method", value: "•••• 4242" },
+    ],
+  },
+];
+
+export const TIMEZONE_OPTIONS = [
+  { value: "America/New_York", label: "Eastern Time (ET)" },
+  { value: "America/Chicago", label: "Central Time (CT)" },
+  { value: "America/Denver", label: "Mountain Time (MT)" },
+  { value: "America/Los_Angeles", label: "Pacific Time (PT)" },
+  { value: "Europe/London", label: "London (GMT)" },
+  { value: "Europe/Paris", label: "Paris (CET)" },
+];

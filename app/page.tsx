@@ -1,5 +1,5 @@
-import { PitchTracker } from "@/components/pitch-tracker";
+import { Dashboard } from "@/components/dashboard";
 
 export default function Home() {
-  return <PitchTracker />;
+  return <Dashboard activeNavId="dashboard" />;
 }

@@ -1,0 +1,11 @@
+export { KnowledgeBasePage } from "./knowledge-base-page";
+export { KnowledgeBaseHeader } from "./knowledge-base-header";
+export { KnowledgeBaseMetrics } from "./knowledge-base-metrics";
+export { DocumentsTable } from "./documents-table";
+export { DocumentsToolbar } from "./documents-toolbar";
+export { KnowledgeDonut } from "./knowledge-donut";
+export { KnowledgeOverviewCard } from "./knowledge-overview-card";
+export { TopTagsCard } from "./top-tags-card";
+export { RecentActivityCard } from "./recent-activity-card";
+export { QuickActionsCard } from "./quick-actions-card";
+export { ImproveBanner } from "./improve-banner";

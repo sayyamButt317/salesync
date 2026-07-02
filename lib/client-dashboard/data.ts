@@ -1,0 +1,263 @@
+import {
+  Brain,
+  CalendarCheck,
+  DollarSign,
+  Handshake,
+  MessageCircle,
+  MessageSquare,
+  Sparkles,
+  Target,
+  Users,
+  Video,
+  Zap,
+} from "lucide-react";
+import type {
+  AIScoreMetric,
+  ClientDashboardMetric,
+  ClientProfile,
+  ClientRecentConversation,
+  PerformanceDataPoint,
+  TopAgent,
+  UpcomingBooking,
+} from "./types";
+
+export const CLIENT_PROFILE: ClientProfile = {
+  companyName: "Brandify Co.",
+  email: "hello@brandify.co",
+  initials: "BC",
+  creditsUsed: 12450,
+  creditsTotal: 20000,
+  plan: "Pro Plan",
+  renewalDate: "Renews July 12, 2025",
+};
+
+export const CLIENT_DASHBOARD_METRICS: ClientDashboardMetric[] = [
+  {
+    id: "leads",
+    label: "Leads",
+    value: 248,
+    trend: 24,
+    trendDirection: "up",
+    trendLabel: "vs last week",
+    icon: Users,
+    iconBg: "#ede9fe",
+    iconColor: "#7c3aed",
+  },
+  {
+    id: "conversations",
+    label: "Conversations",
+    value: 186,
+    trend: 18,
+    trendDirection: "up",
+    trendLabel: "vs last week",
+    icon: MessageSquare,
+    iconBg: "#dbeafe",
+    iconColor: "#3b82f6",
+  },
+  {
+    id: "meetings",
+    label: "Meetings",
+    value: 42,
+    trend: 12,
+    trendDirection: "up",
+    trendLabel: "vs last week",
+    icon: CalendarCheck,
+    iconBg: "#ffedd5",
+    iconColor: "#f97316",
+  },
+  {
+    id: "deals",
+    label: "Deals",
+    value: 18,
+    trend: 8,
+    trendDirection: "up",
+    trendLabel: "vs last week",
+    icon: Handshake,
+    iconBg: "#dcfce7",
+    iconColor: "#22c55e",
+  },
+  {
+    id: "revenue",
+    label: "Revenue",
+    value: 62400,
+    trend: 22,
+    trendDirection: "up",
+    trendLabel: "vs last week",
+    icon: DollarSign,
+    iconBg: "#cffafe",
+    iconColor: "#06b6d4",
+    formatValue: (value) =>
+      value >= 1000 ? `$${(value / 1000).toFixed(1)}K` : `$${value}`,
+  },
+  {
+    id: "ugc",
+    label: "UGC",
+    value: 36,
+    trend: 15,
+    trendDirection: "up",
+    trendLabel: "vs last week",
+    icon: Video,
+    iconBg: "#fce7f3",
+    iconColor: "#ec4899",
+  },
+];
+
+export const PERFORMANCE_CHART_DATA: PerformanceDataPoint[] = [
+  { label: "May 20", leads: 32, conversations: 24, bookings: 8, deals: 3 },
+  { label: "May 21", leads: 38, conversations: 28, bookings: 10, deals: 4 },
+  { label: "May 22", leads: 35, conversations: 32, bookings: 9, deals: 3 },
+  { label: "May 23", leads: 42, conversations: 36, bookings: 12, deals: 5 },
+  { label: "May 24", leads: 48, conversations: 40, bookings: 14, deals: 6 },
+  { label: "May 25", leads: 44, conversations: 38, bookings: 11, deals: 5 },
+  { label: "May 26", leads: 52, conversations: 44, bookings: 16, deals: 7 },
+];
+
+export const AI_SCORE_OVERALL = 92;
+export const AI_SCORE_LABEL = "Excellent";
+
+export const AI_SCORE_METRICS: AIScoreMetric[] = [
+  {
+    id: "quality",
+    label: "Response Quality",
+    value: 94,
+    icon: Sparkles,
+    iconBg: "#ede9fe",
+    iconColor: "#7c3aed",
+  },
+  {
+    id: "engagement",
+    label: "Lead Engagement",
+    value: 91,
+    icon: Target,
+    iconBg: "#dbeafe",
+    iconColor: "#3b82f6",
+  },
+  {
+    id: "tasks",
+    label: "Task Completion",
+    value: 88,
+    icon: Zap,
+    iconBg: "#ffedd5",
+    iconColor: "#f97316",
+  },
+  {
+    id: "knowledge",
+    label: "Knowledge Accuracy",
+    value: 93,
+    icon: Brain,
+    iconBg: "#dcfce7",
+    iconColor: "#22c55e",
+  },
+];
+
+export const TOP_AGENTS: TopAgent[] = [
+  {
+    id: "1",
+    name: "WhatsApp Outreach Agent",
+    role: "Lead Generation",
+    icon: MessageCircle,
+    iconBg: "#dcfce7",
+    iconColor: "#22c55e",
+    status: "Active",
+    leads: 86,
+    conversations: 64,
+    bookings: 18,
+    aiScore: 96,
+    sparkline: [72, 78, 82, 88, 92, 94, 96],
+  },
+  {
+    id: "2",
+    name: "Email Follow-Up Agent",
+    role: "Nurture & Follow-Up",
+    icon: MessageSquare,
+    iconBg: "#dbeafe",
+    iconColor: "#3b82f6",
+    status: "Active",
+    leads: 52,
+    conversations: 48,
+    bookings: 12,
+    aiScore: 91,
+    sparkline: [68, 74, 78, 82, 86, 89, 91],
+  },
+  {
+    id: "3",
+    name: "Booking Assistant",
+    role: "Scheduling",
+    icon: CalendarCheck,
+    iconBg: "#ffedd5",
+    iconColor: "#f97316",
+    status: "Training",
+    leads: 28,
+    conversations: 22,
+    bookings: 8,
+    aiScore: 84,
+    sparkline: [60, 65, 70, 74, 78, 81, 84],
+  },
+  {
+    id: "4",
+    name: "UGC Campaign Agent",
+    role: "Content Outreach",
+    icon: Video,
+    iconBg: "#fce7f3",
+    iconColor: "#ec4899",
+    status: "Paused",
+    leads: 14,
+    conversations: 10,
+    bookings: 2,
+    aiScore: 78,
+    sparkline: [82, 80, 79, 78, 78, 77, 78],
+  },
+];
+
+export const UPCOMING_BOOKINGS: UpcomingBooking[] = [
+  {
+    id: "1",
+    dateLabel: "MAY 27",
+    name: "Sarah Mitchell",
+    meetingType: "Product Demo",
+    time: "10:00 AM",
+  },
+  {
+    id: "2",
+    dateLabel: "MAY 27",
+    name: "James Cooper",
+    meetingType: "Discovery Call",
+    time: "2:30 PM",
+  },
+  {
+    id: "3",
+    dateLabel: "MAY 28",
+    name: "Emily Rodriguez",
+    meetingType: "Strategy Review",
+    time: "11:00 AM",
+  },
+];
+
+export const CLIENT_RECENT_CONVERSATIONS: ClientRecentConversation[] = [
+  {
+    id: "1",
+    platform: "WhatsApp",
+    name: "Alex Turner",
+    message: "Interested in your AI agent for outreach...",
+    timeAgo: "5m ago",
+    status: "New",
+  },
+  {
+    id: "2",
+    platform: "Instagram",
+    name: "Mia Chen",
+    message: "Can we schedule a call this week?",
+    timeAgo: "22m ago",
+    status: "Replied",
+  },
+  {
+    id: "3",
+    platform: "Email",
+    name: "David Park",
+    message: "Thanks for the proposal, reviewing now.",
+    timeAgo: "1h ago",
+    status: "Replied",
+  },
+];
+
+export const DATE_RANGE_LABEL = "May 20 – May 26, 2025";

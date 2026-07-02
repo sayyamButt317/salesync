@@ -20,24 +20,30 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { id: "dashboard", label: "Dashboard", href: "/", icon: LayoutDashboard },
-  { id: "agencies", label: "Agencies", href: "/", icon: Building2 },
-  { id: "pitches", label: "Pitches", href: "#", icon: Send },
-  { id: "conversations", label: "Conversations", href: "#", icon: MessageSquare },
-  { id: "follow-ups", label: "Follow Ups", href: "#", icon: Timer },
-  { id: "tasks", label: "Tasks", href: "#", icon: CheckSquare },
-  { id: "templates", label: "Templates", href: "#", icon: FileText },
-  { id: "reports", label: "Reports", href: "#", icon: BarChart3 },
-  { id: "settings", label: "Settings", href: "#", icon: Settings },
+  { id: "agencies", label: "Agencies", href: "/agencies", icon: Building2 },
+  { id: "pitches", label: "Pitches", href: "/pitches", icon: Send },
+  { id: "conversations", label: "Conversations", href: "/conversations", icon: MessageSquare },
+  { id: "follow-ups", label: "Follow Ups", href: "/follow-ups", icon: Timer },
+  { id: "tasks", label: "Tasks", href: "/tasks", icon: CheckSquare },
+  { id: "templates", label: "Templates", href: "/templates", icon: FileText },
+  { id: "reports", label: "Reports", href: "/reports", icon: BarChart3 },
+  { id: "settings", label: "Settings", href: "/settings", icon: Settings },
 ];
 
 export interface UserProfile {
   name: string;
+  email: string;
   role: string;
   initials: string;
+  plan: string;
+  planRenewalPercent: number;
 }
 
 export const DEFAULT_USER: UserProfile = {
-  name: "Sayyam J.",
+  name: "Sajam J.",
+  email: "sajam@acme.com",
   role: "Admin",
   initials: "SJ",
+  plan: "Pro Plan",
+  planRenewalPercent: 72,
 };

@@ -1,0 +1,9 @@
+export { ClientDashboard } from "./client-dashboard";
+export { ClientDashboardHeader } from "./client-dashboard-header";
+export { ClientDashboardMetrics } from "./client-dashboard-metrics";
+export { PerformanceOverviewChart } from "./performance-overview-chart";
+export { AIPerformanceCard } from "./ai-performance-card";
+export { TopAgentsTable } from "./top-agents-table";
+export { UpcomingBookingsWidget } from "./upcoming-bookings-widget";
+export { ClientRecentConversations } from "./client-recent-conversations";
+export { MiniSparkline } from "./mini-sparkline";
