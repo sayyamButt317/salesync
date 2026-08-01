@@ -48,10 +48,17 @@ declare global {
   }
 }
 
-const FACEBOOK_APP_ID = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID;
-const WHATSAPP_CONFIG_ID = process.env.NEXT_PUBLIC_WHATSAPP_CONFIG_ID;
-const FACEBOOK_SDK_URL = process.env.NEXT_PUBLIC_FACEBOOK_SDK_URL;
-const FACEBOOK_SDK_SCRIPT_ID = process.env.NEXT_PUBLIC_FACEBOOK_SDK_SCRIPT_ID;
+const FACEBOOK_APP_ID =
+  process.env.NEXT_PUBLIC_FACEBOOK_APP_ID;
+const WHATSAPP_CONFIG_ID =
+  process.env.NEXT_PUBLIC_WHATSAPP_CONFIG_ID;
+const FACEBOOK_SDK_URL =
+  process.env.NEXT_PUBLIC_FACEBOOK_SDK_URL;
+  "https://connect.facebook.net/en_US/sdk.js";
+const FACEBOOK_SDK_SCRIPT_ID =
+  process.env.NEXT_PUBLIC_FACEBOOK_SDK_SCRIPT_ID ?? "facebook-jssdk";
+
+type SdkStatus = "loading" | "ready" | "error";
 
 export interface WhatsAppSignupProps {
   appId?: string;
@@ -63,6 +70,19 @@ export interface WhatsAppSignupProps {
   showDebug?: boolean;
   connectedCode?: string | null;
   className?: string;
+}
+
+function initFacebookSdk(appId: string) {
+  if (!window.FB) return false;
+
+  window.FB.init({
+    appId,
+    cookie: true,
+    xfbml: false,
+    version: "v25.0",
+  });
+
+  return true;
 }
 
 export default function WhatsAppSignup({
@@ -80,37 +100,85 @@ export default function WhatsAppSignup({
   const [sdkResponse, setSdkResponse] =
     useState<FacebookLoginResponse | null>(null);
   const [loading, setLoading] = useState(false);
-  const [sdkReady, setSdkReady] = useState(false);
+  const [sdkStatus, setSdkStatus] = useState<SdkStatus>("loading");
 
   useEffect(() => {
     setSessionInfo(connectedCode);
   }, [connectedCode]);
 
   useEffect(() => {
+    let cancelled = false;
+    let pollId: ReturnType<typeof setInterval> | undefined;
+
+    const markReady = () => {
+      if (cancelled) return;
+      if (initFacebookSdk(appId || "")) {
+        setSdkStatus("ready");
+      }
+    };
+
+    const markError = () => {
+      if (!cancelled) setSdkStatus("error");
+    };
+
+    // Already loaded from a previous mount
     if (window.FB) {
-      setSdkReady(true);
+      markReady();
       return;
     }
 
+    // Ensure fbAsyncInit is set before the script finishes loading
+    const previousInit = window.fbAsyncInit;
     window.fbAsyncInit = () => {
-      window.FB?.init({
-        appId: appId || "",
-        cookie: true,
-        xfbml: false,
-        version: "v25.0",
-      });
-      setSdkReady(true);
+      previousInit?.();
+      markReady();
     };
 
-    if (document.getElementById(FACEBOOK_SDK_SCRIPT_ID || "")) return;
+    const existing = document.getElementById(FACEBOOK_SDK_SCRIPT_ID);
+
+    if (existing) {
+      // Script tag exists but FB may still be initializing — poll briefly
+      pollId = setInterval(() => {
+        if (window.FB) {
+          markReady();
+          if (pollId) clearInterval(pollId);
+        }
+      }, 200);
+
+      const timeoutId = setTimeout(() => {
+        if (pollId) clearInterval(pollId);
+        if (!window.FB) markError();
+      }, 10000);
+
+      return () => {
+        cancelled = true;
+        if (pollId) clearInterval(pollId);
+        clearTimeout(timeoutId);
+      };
+    }
 
     const script = document.createElement("script");
-    script.id = FACEBOOK_SDK_SCRIPT_ID || "";
+    script.id = FACEBOOK_SDK_SCRIPT_ID;
     script.src = FACEBOOK_SDK_URL || "";
     script.async = true;
     script.defer = true;
     script.crossOrigin = "anonymous";
+    script.onerror = markError;
     document.body.appendChild(script);
+
+    // Fallback if fbAsyncInit never fires
+    const timeoutId = setTimeout(() => {
+      if (window.FB) {
+        markReady();
+      } else if (!cancelled) {
+        markError();
+      }
+    }, 10000);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
   }, [appId]);
 
   const fbLoginCallback = (response: FacebookLoginResponse) => {
@@ -131,6 +199,17 @@ export default function WhatsAppSignup({
       return;
     }
 
+    // Facebook Login requires HTTPS (except localhost)
+    if (
+      typeof window !== "undefined" &&
+      window.location.protocol !== "https:" &&
+      window.location.hostname !== "localhost" &&
+      window.location.hostname !== "127.0.0.1"
+    ) {
+      alert("Facebook Login requires HTTPS. Open this page over https://");
+      return;
+    }
+
     setLoading(true);
     window.FB.login(fbLoginCallback, {
       config_id: configId || "",
@@ -141,6 +220,15 @@ export default function WhatsAppSignup({
   };
 
   const isConnected = Boolean(sessionInfo);
+  const sdkReady = sdkStatus === "ready";
+
+  const buttonLabel = loading
+    ? "Connecting..."
+    : sdkStatus === "loading"
+      ? "Loading Facebook SDK..."
+      : sdkStatus === "error"
+        ? "Retry Facebook Connect"
+        : "Continue with Facebook";
 
   if (embedded) {
     return (
@@ -166,18 +254,28 @@ export default function WhatsAppSignup({
                 WhatsApp Business connected successfully
               </div>
             ) : (
-              <Button
-                type="button"
-                className="mt-3 bg-[#1877f2] shadow-[#1877f2]/20 hover:bg-[#166fe5]"
-                onClick={launchWhatsAppSignup}
-                disabled={loading || !sdkReady}
-              >
-                {loading
-                  ? "Connecting..."
-                  : !sdkReady
-                    ? "Loading Facebook SDK..."
-                    : "Continue with Facebook"}
-              </Button>
+              <>
+                <Button
+                  type="button"
+                  className="mt-3 bg-[#1877f2] shadow-[#1877f2]/20 hover:bg-[#166fe5]"
+                  onClick={() => {
+                    if (sdkStatus === "error") {
+                      window.location.reload();
+                      return;
+                    }
+                    launchWhatsAppSignup();
+                  }}
+                  disabled={loading || sdkStatus === "loading"}
+                >
+                  {buttonLabel}
+                </Button>
+                {sdkStatus === "error" ? (
+                  <p className="mt-2 text-xs text-red-500">
+                    Could not load the Facebook SDK. Check your network and that
+                    NEXT_PUBLIC_FACEBOOK_* env vars are set, then retry.
+                  </p>
+                ) : null}
+              </>
             )}
           </div>
         </div>
