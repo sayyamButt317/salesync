@@ -42,10 +42,13 @@ export function buildAgentSummary(data: AgentWizardFormData): AgentSummary {
   const channels: AgentSummaryChannel[] = [];
 
   if (data.channels.whatsapp.enabled && data.channels.whatsapp.number) {
+    const number = `${data.channels.whatsapp.countryCode} ${data.channels.whatsapp.number}`;
     channels.push({
       id: "whatsapp",
       label: "WhatsApp",
-      value: `${data.channels.whatsapp.countryCode} ${data.channels.whatsapp.number}`,
+      value: data.channels.whatsappAuthCode
+        ? `${number} · Business connected`
+        : number,
     });
   }
 

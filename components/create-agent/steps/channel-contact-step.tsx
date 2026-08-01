@@ -1,12 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ChannelCard,
   Input,
   PhoneInput,
   Select,
 } from "@/components/ui";
+import WhatsAppSignup from "@/components/whatsapp/signup";
 import { BUSINESS_HOURS_OPTIONS } from "@/lib/create-agent/channel-constants";
 import type {
   BusinessHoursOption,
@@ -34,6 +35,8 @@ export function ChannelContactStep({
   onChange,
 }: ChannelContactStepProps) {
   const listRef = useGsapStaggerGrid<HTMLDivElement>(4);
+  const showWhatsAppSignup =
+    data.whatsapp.enabled && data.whatsapp.number.trim().length >= 6;
 
   const update = (partial: Partial<ChannelContact>) => {
     onChange({ ...data, ...partial });
@@ -67,7 +70,10 @@ export function ChannelContactStep({
             description="Connect with your customers on WhatsApp."
             enabled={data.whatsapp.enabled}
             onToggle={(enabled) =>
-              update({ whatsapp: { ...data.whatsapp, enabled } })
+              update({
+                whatsapp: { ...data.whatsapp, enabled },
+                ...(enabled ? {} : { whatsappAuthCode: null }),
+              })
             }
           >
             <PhoneInput
@@ -79,11 +85,33 @@ export function ChannelContactStep({
                 })
               }
               onNumberChange={(number) =>
-                update({ whatsapp: { ...data.whatsapp, number } })
+                update({
+                  whatsapp: { ...data.whatsapp, number },
+                })
               }
               error={errors.whatsapp}
               disabled={!data.whatsapp.enabled}
             />
+
+            <AnimatePresence>
+              {showWhatsAppSignup ? (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, y: -8 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -8 }}
+                  transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  className="mt-4 overflow-hidden"
+                >
+                  <WhatsAppSignup
+                    embedded
+                    connectedCode={data.whatsappAuthCode}
+                    onCodeReceived={(code) =>
+                      update({ whatsappAuthCode: code })
+                    }
+                  />
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
           </ChannelCard>
         </div>
 

@@ -66,6 +66,7 @@ export const INITIAL_FORM_DATA: AgentWizardFormData = {
     email: { enabled: true, address: "" },
     phone: { enabled: false, countryCode: "+1", number: "" },
     businessHours: "24/7",
+    whatsappAuthCode: null,
   },
   integrations: INITIAL_INTEGRATIONS,
 };

@@ -20,6 +20,8 @@ export interface ChannelContact {
   email: EmailChannel;
   phone: PhoneChannel;
   businessHours: BusinessHoursOption;
+  /** Authorization code from Meta WhatsApp Embedded Signup */
+  whatsappAuthCode?: string | null;
 }
 
 export interface ChannelContactErrors {
