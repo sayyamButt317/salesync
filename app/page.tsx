@@ -1,5 +1,5 @@
-import { Dashboard } from "@/components/dashboard";
+import { LandingPage } from "@/components/landing";
 
 export default function Home() {
-  return <Dashboard activeNavId="dashboard" />;
+  return <LandingPage />;
 }

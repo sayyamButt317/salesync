@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SaleSync — Influencer Agency Pitch Tracker",
-  description: "Track influencer agency outreach across US, UK, UAE, and Australia.",
+  title: "Salesync — AI Employees That Work 24/7",
+  description:
+    "Configure AI employees that qualify leads, book meetings, and follow up automatically. Start free in minutes.",
 };
 
 export default function RootLayout({
