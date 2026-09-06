@@ -1,4 +1,3 @@
-export { LoginPage } from "./login-page";
 export { LoginForm } from "./login-form";
 export { LoginMarketingPanel } from "./login-marketing-panel";
 export { AuthSplitLayout } from "./auth-split-layout";
