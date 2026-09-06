@@ -1,32 +1,46 @@
 "use client";
-
 import Link from "next/link";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Checkbox, IconInput } from "@/components/ui";
 import { FieldLabel } from "@/components/ui/field-label";
-import { LOGIN_DEFAULTS, SOCIAL_AUTH_PROVIDERS } from "@/lib/auth/data";
-import type { LoginFormData, LoginFormProps } from "@/lib/auth/types";
+import { SOCIAL_AUTH_PROVIDERS } from "@/lib/auth/data";
+import type { LoginFormProps } from "@/lib/auth/types";
 import { scaleIn } from "@/lib/motion/variants";
 import { SocialLoginButton } from "./social-login-button";
+import LoginMutation from "@/routes/auth/mutation";
+import { toast } from "sonner";
+import { Input } from "../ui/input";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoginFormSchema, LoginFormValidator } from "@/validators/login-validator";
+import { useForm } from "react-hook-form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 
 export function LoginForm({
-  onSubmit,
   signupHref = "/signup",
   forgotPasswordHref = "#",
 }: LoginFormProps) {
-  const [form, setForm] = useState<LoginFormData>(LOGIN_DEFAULTS);
+
   const [showPassword, setShowPassword] = useState(false);
+  const form = useForm<LoginFormValidator>({
+    resolver: zodResolver(LoginFormSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-  const update = (patch: Partial<LoginFormData>) => {
-    setForm((prev) => ({ ...prev, ...patch }));
+  const { mutate: loginMutation, isPending } = LoginMutation();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const onSubmit = async (data: LoginFormValidator) => {
+    await loginMutation({
+      email: data.email,
+      password: data.password,
+    });
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    onSubmit?.(form);
-  };
 
   return (
     <motion.div
@@ -46,68 +60,80 @@ export function LoginForm({
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <FieldLabel htmlFor="email">Email Address</FieldLabel>
-            <IconInput
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              autoComplete="email"
-              value={form.email}
-              onChange={(event) => update({ email: event.target.value })}
-              leftIcon={<Mail className="h-4 w-4" />}
-            />
-          </div>
 
-          <div>
-            <div className="mb-2 flex items-center justify-between">
-              <FieldLabel htmlFor="password" className="mb-0">
-                Password
-              </FieldLabel>
-              <Link
-                href={forgotPasswordHref}
-                className="text-xs font-semibold text-violet-600 hover:text-violet-700"
-              >
-                Forgot?
-              </Link>
-            </div>
-            <IconInput
-              id="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
-              autoComplete="current-password"
-              value={form.password}
-              onChange={(event) => update({ password: event.target.value })}
-              leftIcon={<Lock className="h-4 w-4" />}
-              rightIcon={
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  className="cursor-pointer text-gray-400 transition-colors hover:text-gray-600"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              }
+        {/* Form */}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            ref={formRef}
+            className="space-y-5"
+          >
+            {/* Email */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="name@company.com"
+                      className="h-12 bg-white/5 border-white/10 text-black placeholder:text-slate-500 focus:ring-2 focus:ring-primarytext focus:border-transparent rounded-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs text-red-400" />
+                </FormItem>
+              )}
             />
-          </div>
 
+            {/* Password */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Enter your password"
+                        className="h-12 bg-white/5 border-white/10 text-black placeholder:text-slate-500 focus:ring-2 focus:ring-primarytext focus:border-transparent rounded-xl pr-10"
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((v) => !v)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
+                      </button>
+                    </div>
+                  </FormControl>
+                  <FormMessage className="text-xs text-red-400" />
+                </FormItem>
+              )}
+            />
+            {/* 
           <Checkbox
             id="remember"
             checked={form.rememberMe}
             onChange={(rememberMe) => update({ rememberMe })}
             label="Remember me"
-          />
+          /> */}
 
-          <Button type="submit" className="w-full py-2.5">
-            Log in
-          </Button>
-        </form>
+            <Button type="submit" className="w-full py-2.5">
+              Log in
+              {isPending && (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              )}
+            </Button>
+          </form>
+        </Form>
 
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">

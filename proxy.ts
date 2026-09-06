@@ -14,16 +14,16 @@ export function proxy(request: NextRequest) {
     }
 
     if (accessToken) {
-        if (path.startsWith('/auth/login') && role === 'company') {
-            return NextResponse.redirect(new URL('/client/create-campaign', request.url));
+        if (path.startsWith('/login') && role === 'admin') {
+            return NextResponse.redirect(new URL('/client/dashboard', request.url));
         }
 
-        if (path.startsWith('/admin') && role !== 'admin') {
-            return NextResponse.redirect(new URL('/auth/login', request.url));
+        if (path.startsWith('/login') && role !== 'user') {
+            return NextResponse.redirect(new URL('/client/dashboard', request.url));
         }
 
-        if (path.startsWith('/client') && role !== 'company') {
-            return NextResponse.redirect(new URL('/auth/login', request.url));
+        if (path.startsWith('/login') && role !== 'super-admin') {
+            return NextResponse.redirect(new URL('/add-record',request.url));
         }
     }
     else {

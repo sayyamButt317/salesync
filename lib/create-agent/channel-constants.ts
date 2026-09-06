@@ -1,6 +1,7 @@
 import type { BusinessHoursOption } from "./channels";
 
 export const COUNTRY_CODES = [
+  {value:"+92",label:"+92",region:"PK"},
   { value: "+1", label: "+1", region: "US" },
   { value: "+44", label: "+44", region: "UK" },
   { value: "+971", label: "+971", region: "UAE" },
