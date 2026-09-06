@@ -1,5 +1,4 @@
 export { Button } from "./button";
-export type { ButtonProps } from "./button";
 export { StatCard } from "./stat-card";
 export type { StatCardProps } from "./stat-card";
 export { SearchInput } from "./search-input";
