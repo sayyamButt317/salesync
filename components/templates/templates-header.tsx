@@ -24,7 +24,8 @@ export function TemplatesHeader() {
       </div>
 
       <div className="flex flex-wrap items-center gap-2.5">
-        <Button icon={Plus} iconPosition="left">
+        <Button>
+          <Plus className="h-4 w-4" />
           New Template
         </Button>
         <button

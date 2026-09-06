@@ -53,7 +53,8 @@ export function LeadsHeader({ search, onSearchChange }: LeadsHeaderProps) {
           <Upload className="h-4 w-4 text-gray-400" />
           Export
         </button>
-        <Button icon={Plus} iconPosition="left">
+        <Button>
+          <Plus className="h-4 w-4" />
           Add Lead
         </Button>
       </div>

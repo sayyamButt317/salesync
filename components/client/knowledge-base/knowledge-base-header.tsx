@@ -50,7 +50,8 @@ export function KnowledgeBaseHeader({
           <SlidersHorizontal className="h-4 w-4 text-gray-400" />
           Filters
         </button>
-        <Button icon={Plus} iconPosition="left">
+        <Button>
+          <Plus className="h-4 w-4" />
           Upload
           <ChevronDown className="h-4 w-4" />
         </Button>

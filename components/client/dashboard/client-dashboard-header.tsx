@@ -18,7 +18,7 @@ export interface ClientDashboardHeaderProps {
 }
 
 export function ClientDashboardHeader({
-  userName = "Sajam",
+  userName = "Sayyam",
 }: ClientDashboardHeaderProps) {
   return (
     <motion.div
@@ -54,7 +54,8 @@ export function ClientDashboardHeader({
           Filters
         </button>
         <Link href="/client/create-agent">
-          <Button icon={Plus} iconPosition="left">
+          <Button>
+            <Plus className="h-4 w-4" />
             Create Agent
           </Button>
         </Link>

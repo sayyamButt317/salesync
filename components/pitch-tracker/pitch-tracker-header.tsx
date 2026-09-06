@@ -37,7 +37,8 @@ export function PitchTrackerHeader({
       </div>
 
       <div className="flex items-center gap-2.5">
-        <Button icon={Plus} iconPosition="left">
+        <Button>
+          <Plus className="h-4 w-4" />
           Add Agency
           <ChevronDown className="h-3.5 w-3.5 opacity-70" />
         </Button>

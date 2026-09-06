@@ -50,7 +50,8 @@ export function ConversationsHeader({
           <SlidersHorizontal className="h-4 w-4 text-gray-400" />
           Filters
         </button>
-        <Button icon={Plus} iconPosition="left">
+        <Button>
+          <Plus className="h-4 w-4" />
           New Message
         </Button>
         <IconButton badge={3} aria-label="Notifications">

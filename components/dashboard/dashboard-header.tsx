@@ -34,7 +34,8 @@ export function DashboardHeader({
 
       <div className="flex flex-wrap items-center gap-2.5">
         <Link href="/client/create-agent">
-          <Button icon={Plus} iconPosition="left">
+          <Button>
+            <Plus className="h-4 w-4" />
             Add Agency
           </Button>
         </Link>
