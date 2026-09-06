@@ -48,7 +48,8 @@ export function AgentsHeader({ search, onSearchChange }: AgentsHeaderProps) {
           Filters
         </button>
         <Link href="/client/create-agent">
-          <Button icon={Plus} iconPosition="left">
+          <Button>
+            <Plus className="h-4 w-4" />
             Create New Agent
           </Button>
         </Link>
