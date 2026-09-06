@@ -53,7 +53,8 @@ export function BookingsHeader({ search, onSearchChange }: BookingsHeaderProps) 
           <Upload className="h-4 w-4 text-gray-400" />
           Export
         </button>
-        <Button icon={Plus} iconPosition="left">
+        <Button>
+          <Plus className="h-4 w-4" />
           New Booking
         </Button>
       </div>

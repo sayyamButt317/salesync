@@ -31,7 +31,8 @@ export function CreateAgentWidget() {
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               <Link href="/client/create-agent">
-                <Button size="sm" icon={Plus} iconPosition="left">
+                <Button size="sm">
+                  <Plus className="h-4 w-4" />
                   Create Agent
                 </Button>
               </Link>

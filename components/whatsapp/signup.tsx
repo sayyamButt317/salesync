@@ -64,9 +64,7 @@ export interface WhatsAppSignupProps {
   appId?: string;
   configId?: string;
   onCodeReceived?: (code: string) => void;
-  /** Compact card UI for embedding in the create-agent wizard */
   embedded?: boolean;
-  /** Show raw SDK/session dumps (dev only) */
   showDebug?: boolean;
   connectedCode?: string | null;
   className?: string;
