@@ -40,7 +40,8 @@ export function ReportsHeader() {
           <SlidersHorizontal className="h-4 w-4 text-gray-400" />
           Filters
         </button>
-        <Button icon={Upload} iconPosition="left">
+        <Button>
+          <Upload className="h-4 w-4" />
           Export
         </Button>
         <IconButton badge={3} aria-label="Notifications">
