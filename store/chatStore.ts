@@ -29,6 +29,7 @@ export interface ThreadPreview {
   preview: string;
   timestamp: string;
   username?: string;
+  phone?: string;
 }
 
 interface ChatState {
@@ -261,6 +262,7 @@ export const useChatStore = create<ChatState>()(
             const shouldIncrementUnread =
               !isActive &&
               (message.sender === "USER" || message.sender === "SYSTEM");
+            const previousPreview = state.previews[threadId];
 
             return {
               chats: {
@@ -277,7 +279,8 @@ export const useChatStore = create<ChatState>()(
                 [threadId]: {
                   preview: message.content,
                   timestamp: message.timestamp,
-                  username: message.username,
+                  username: message.username || previousPreview?.username,
+                  phone: previousPreview?.phone,
                 },
               },
             };
