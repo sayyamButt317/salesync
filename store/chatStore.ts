@@ -32,6 +32,9 @@ export interface ThreadPreview {
   phone?: string;
 }
 
+/** Stable empty list so Zustand selectors don't create a new [] every render. */
+export const EMPTY_CHAT_MESSAGES: ChatMessage[] = [];
+
 interface ChatState {
   chats: Record<string, ChatMessage[]>;
   unread: Record<string, number>;
@@ -121,7 +124,6 @@ export function toChatMessage(payload: {
   };
 }
 
-/** Hydrate store messages from a conversation API payload. */
 export function messagesFromApiPayload(
   threadId: string,
   data: unknown,
@@ -202,25 +204,51 @@ export const useChatStore = create<ChatState>()(
 
       setActiveThreadId: (threadId) =>
         set(
-          (state) => ({
-            activeThreadId: threadId,
-            unread: threadId
-              ? { ...state.unread, [threadId]: 0 }
-              : state.unread,
-          }),
+          (state) => {
+            if (state.activeThreadId === threadId) {
+              if (!threadId || (state.unread[threadId] || 0) === 0) {
+                return state;
+              }
+            }
+
+            return {
+              activeThreadId: threadId,
+              unread: threadId
+                ? { ...state.unread, [threadId]: 0 }
+                : state.unread,
+            };
+          },
           false,
           "chat/setActiveThreadId",
         ),
 
       setConnectionStatus: (status) =>
-        set({ connectionStatus: status }, false, "chat/setConnectionStatus"),
+        set(
+          (state) =>
+            state.connectionStatus === status
+              ? state
+              : { connectionStatus: status },
+          false,
+          "chat/setConnectionStatus",
+        ),
 
       setMessages: (threadId, messages) =>
         set(
           (state) => {
             const nextMessages = sortByTimestamp(dedupeMessages(messages));
-            const last = nextMessages[nextMessages.length - 1];
+            const previousMessages = state.chats[threadId] || [];
 
+            const unchanged =
+              previousMessages.length === nextMessages.length &&
+              previousMessages.every(
+                (message, index) =>
+                  message.id === nextMessages[index]?.id &&
+                  message.content === nextMessages[index]?.content &&
+                  message.timestamp === nextMessages[index]?.timestamp,
+              );
+
+            if (unchanged) return state;
+            const last = nextMessages[nextMessages.length - 1];
             return {
               chats: {
                 ...state.chats,
@@ -240,6 +268,7 @@ export const useChatStore = create<ChatState>()(
                       preview: last.content,
                       timestamp: last.timestamp,
                       username: last.username,
+                      phone: state.previews[threadId]?.phone,
                     },
                   }
                 : state.previews,
@@ -340,9 +369,12 @@ export const useChatStore = create<ChatState>()(
 
       markRead: (threadId) =>
         set(
-          (state) => ({
-            unread: { ...state.unread, [threadId]: 0 },
-          }),
+          (state) => {
+            if ((state.unread[threadId] || 0) === 0) return state;
+            return {
+              unread: { ...state.unread, [threadId]: 0 },
+            };
+          },
           false,
           "chat/markRead",
         ),
@@ -360,7 +392,7 @@ export const useChatStore = create<ChatState>()(
           "chat/clearAll",
         ),
 
-      getMessages: (threadId) => get().chats[threadId] || [],
+      getMessages: (threadId) => get().chats[threadId] || EMPTY_CHAT_MESSAGES,
       getUnreadCount: (threadId) => get().unread[threadId] || 0,
       getTotalUnread: () =>
         Object.values(get().unread).reduce((total, count) => total + count, 0),

@@ -19,6 +19,7 @@ import {
 } from "@/routes/client/query";
 import { useDeleteConversationMutation } from "@/routes/client/mutation";
 import {
+  EMPTY_CHAT_MESSAGES,
   messagesFromApiPayload,
   toWhatsAppMessages,
   useChatStore,
@@ -49,9 +50,10 @@ export function ConversationPage({
   const setActiveThreadId = useChatStore((state) => state.setActiveThreadId);
   const markRead = useChatStore((state) => state.markRead);
   const clearThread = useChatStore((state) => state.clearThread);
-  const storeMessages = useChatStore((state) =>
-    selectedThreadId ? state.chats[selectedThreadId] || [] : [],
-  );
+  const storeMessages = useChatStore((state) => {
+    if (!selectedThreadId) return EMPTY_CHAT_MESSAGES;
+    return state.chats[selectedThreadId] ?? EMPTY_CHAT_MESSAGES;
+  });
   const unreadMap = useChatStore((state) => state.unread);
   const previews = useChatStore((state) => state.previews);
 
@@ -94,11 +96,13 @@ export function ConversationPage({
     if (selectedThreadId) {
       markRead(selectedThreadId);
     }
+  }, [selectedThreadId, setActiveThreadId, markRead]);
 
+  useEffect(() => {
     return () => {
       setActiveThreadId(null);
     };
-  }, [selectedThreadId, setActiveThreadId, markRead]);
+  }, [setActiveThreadId]);
 
   const {
     data: threadData,
