@@ -10,6 +10,7 @@ DELETEMESSAGES_BY_MESSAGE_ID: (message_id: string) => `/company/messages/${messa
 COMPANY_BOOKING_BY_ID:(company_id: string) => `/company/bookings/${company_id}`,
 
 WS_MESSAGES_NOTIFICATIONS: "/ws/messages",
+AGENT_HANDOFF: (conversation_id: string) => `/company/conversations/${conversation_id}/handoff`,
 
 AGENT:{
 SKINCLINIC_AGENT: `/agents/aesthetic-agent`,

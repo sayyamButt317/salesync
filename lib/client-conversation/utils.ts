@@ -208,6 +208,40 @@ function resolveMode(item: Record<string, unknown>): string {
   );
 }
 
+function pickBoolean(
+  source: Record<string, unknown>,
+  keys: string[],
+): boolean | undefined {
+  for (const key of keys) {
+    const value = source[key];
+    if (typeof value === "boolean") return value;
+    if (value === "true" || value === 1) return true;
+    if (value === "false" || value === 0) return false;
+  }
+  return undefined;
+}
+
+function resolveHumanHandoff(item: Record<string, unknown>): boolean {
+  const explicit = pickBoolean(item, [
+    "human_takeover",
+    "human_handoff",
+    "handoff",
+    "human_handoff_enabled",
+  ]);
+  if (explicit !== undefined) return explicit;
+
+  const paused = pickBoolean(item, ["agent_paused"]);
+  if (paused === true) return true;
+
+  const mode = resolveMode(item).toUpperCase();
+  return (
+    mode.includes("HANDOFF") ||
+    mode.includes("HUMAN") ||
+    mode === "MANUAL" ||
+    mode === "TAKEOVER"
+  );
+}
+
 function resolvePhone(
   item: Record<string, unknown>,
   threadId: string,
@@ -350,6 +384,7 @@ function mapConversation(
     username: resolveContactUsername(item, phone, index),
     phone,
     mode,
+    humanHandoff: resolveHumanHandoff(item),
     preview,
     timestamp: formatConversationTime(timestamp) || timestamp,
     messageCount: pickNumber(item, ["message_count", "messageCount", "count"]),

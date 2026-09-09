@@ -5,6 +5,7 @@ export interface WhatsAppConversation {
   username: string;
   phone: string;
   mode: string;
+  humanHandoff: boolean;
   preview: string;
   timestamp: string;
   messageCount: number;
@@ -34,7 +35,12 @@ export interface ConversationPageProps {
     phone_number: string;
     thread_id: string;
   }) => void;
+  onHumanHandoff?: (payload: {
+    conversation_id: string;
+    enabled: boolean;
+  }) => void;
   isDeletingConversation?: boolean;
   isDeletingMessage?: boolean;
   isSendingMessage?: boolean;
+  isUpdatingHandoff?: boolean;
 }

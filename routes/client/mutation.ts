@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
     AestheticAgent,
+  AgentHandoff,
   DeleteConversationMutationApi,
   DeleteMessagesMutationApi,
 } from "./routes";
@@ -66,6 +67,32 @@ export function useAestheticAgentMutation() {
     },
     onError: () => {
       toast.error("Failed to send message");
+    },
+  });
+}
+
+
+export function useAgentHandoffMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["agentHandoff"],
+    mutationFn: ({
+      conversation_id,
+      enabled,
+    }: {
+      conversation_id: string;
+      enabled: boolean;
+    }) => AgentHandoff(conversation_id, enabled),
+    onSuccess: (_data, { enabled }) => {
+      toast.success(
+        enabled ? "Human handoff enabled" : "AI agent resumed",
+      );
+      queryClient.invalidateQueries({ queryKey: ["conversationList"] });
+      queryClient.invalidateQueries({ queryKey: ["conversationByThreadId"] });
+    },
+    onError: () => {
+      toast.error("Failed to update human handoff");
     },
   });
 }

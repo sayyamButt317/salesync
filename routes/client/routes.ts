@@ -50,6 +50,16 @@ export async function AestheticAgent(request: AgenticMessageTypeRequest) {
     return response.data;
 }
 
+export async function AgentHandoff(
+  conversation_id: string,
+  enabled: boolean,
+) {
+  const response = await api.post(UserEndpoint.AGENT_HANDOFF(conversation_id), {
+    human_takeover: enabled,
+  });
+  return response.data;
+}
+
 export async function GoogleReviewAgent(request: AgenticMessageTypeRequest) {
     const response = await api.post(UserEndpoint.AGENT.GOOGLEREVIEW_AGENT, request);
     return response.data;

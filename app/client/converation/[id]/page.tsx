@@ -4,6 +4,7 @@ import { use } from "react";
 import { ConversationPage } from "@/components/client/conversation";
 import {
   useAestheticAgentMutation,
+  useAgentHandoffMutation,
   useDeleteMessagesMutation,
 } from "@/routes/client/mutation";
 
@@ -17,6 +18,7 @@ export default function ClientConversationThreadPage({
   const { id } = use(params);
   const deleteMessages = useDeleteMessagesMutation();
   const aestheticAgent = useAestheticAgentMutation();
+  const agentHandoff = useAgentHandoffMutation();
 
   return (
     <ConversationPage
@@ -27,6 +29,8 @@ export default function ClientConversationThreadPage({
       isDeletingMessage={deleteMessages.isPending}
       onSendMessage={(payload) => aestheticAgent.mutate(payload)}
       isSendingMessage={aestheticAgent.isPending}
+      onHumanHandoff={(payload) => agentHandoff.mutate(payload)}
+      isUpdatingHandoff={agentHandoff.isPending}
     />
   );
 }

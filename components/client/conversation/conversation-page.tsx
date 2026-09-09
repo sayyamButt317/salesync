@@ -34,9 +34,11 @@ export function ConversationPage({
   onDeleteConversation,
   onDeleteMessages,
   onSendMessage,
+  onHumanHandoff,
   isDeletingConversation,
   isDeletingMessage,
   isSendingMessage,
+  isUpdatingHandoff,
 }: ConversationPageProps) {
   const router = useRouter();
   const deleteConversation = useDeleteConversationMutation();
@@ -135,6 +137,8 @@ export function ConversationPage({
       username: threadMeta?.username || fromList?.username || "Conversation",
       phone: threadMeta?.phone || fromList?.phone || selectedThreadId,
       mode: threadMeta?.mode || fromList?.mode || "DEFAULT",
+      humanHandoff:
+        threadMeta?.humanHandoff ?? fromList?.humanHandoff ?? false,
       preview: threadMeta?.preview || fromList?.preview || "",
       timestamp: threadMeta?.timestamp || fromList?.timestamp || "",
       messageCount: threadMeta?.messageCount || fromList?.messageCount || 0,
@@ -235,9 +239,11 @@ export function ConversationPage({
               onDeleteConversation={handleDeleteConversation}
               onDeleteMessages={onDeleteMessages}
               onSendMessage={onSendMessage}
+              onHumanHandoff={onHumanHandoff}
               isDeletingConversation={deleting}
               isDeletingMessage={isDeletingMessage}
               isSendingMessage={isSendingMessage}
+              isUpdatingHandoff={isUpdatingHandoff}
             />
           )}
         </div>

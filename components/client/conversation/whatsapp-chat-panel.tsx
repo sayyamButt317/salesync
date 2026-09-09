@@ -42,9 +42,14 @@ export interface WhatsAppChatPanelProps {
     phone_number: string;
     thread_id: string;
   }) => void;
+  onHumanHandoff?: (payload: {
+    conversation_id: string;
+    enabled: boolean;
+  }) => void;
   isDeletingConversation?: boolean;
   isDeletingMessage?: boolean;
   isSendingMessage?: boolean;
+  isUpdatingHandoff?: boolean;
 }
 
 function ModeBadge({ mode }: { mode: string }) {
@@ -121,19 +126,31 @@ export function WhatsAppChatPanel({
   onDeleteConversation,
   onDeleteMessages,
   onSendMessage,
+  onHumanHandoff,
   isDeletingConversation,
   isDeletingMessage,
   isSendingMessage,
+  isUpdatingHandoff,
 }: WhatsAppChatPanelProps) {
   const feedRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const [draft, setDraft] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [optimisticHandoff, setOptimisticHandoff] = useState<boolean | null>(
+    null,
+  );
 
   useEffect(() => {
     setDraft("");
     setMenuOpen(false);
+    setOptimisticHandoff(null);
   }, [conversation?.threadId]);
+
+  useEffect(() => {
+    if (!isUpdatingHandoff) {
+      setOptimisticHandoff(null);
+    }
+  }, [isUpdatingHandoff, conversation?.humanHandoff]);
 
   useEffect(() => {
     const feed = feedRef.current;
@@ -161,11 +178,22 @@ export function WhatsAppChatPanel({
   const phoneLabel = conversation.phone
     ? formatPhoneNumber(conversation.phone)
     : "";
+  const handoffEnabled =
+    optimisticHandoff ?? conversation.humanHandoff ?? false;
 
   const handleDeleteChat = () => {
     if (!onDeleteConversation) return;
     setMenuOpen(false);
     onDeleteConversation(conversation.threadId);
+  };
+
+  const handleHandoffToggle = (enabled: boolean) => {
+    if (!onHumanHandoff || isUpdatingHandoff) return;
+    setOptimisticHandoff(enabled);
+    onHumanHandoff({
+      conversation_id: conversation.threadId,
+      enabled,
+    });
   };
 
   const handleSend = () => {
@@ -228,7 +256,36 @@ export function WhatsAppChatPanel({
           </p>
         </div>
 
-        <div className="relative flex items-center gap-1" ref={menuRef}>
+        <div className="relative flex items-center gap-2" ref={menuRef}>
+          {onHumanHandoff ? (
+            <div
+              className={`flex shrink-0 items-center gap-2 rounded-lg px-2 py-1.5 ${
+                isUpdatingHandoff ? "opacity-60" : ""
+              }`}
+            >
+              <span className="hidden text-[12px] font-medium text-[#54656f] sm:inline">
+                Human handoff
+              </span>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={handoffEnabled}
+                aria-label="Human handoff"
+                disabled={isUpdatingHandoff}
+                onClick={() => handleHandoffToggle(!handoffEnabled)}
+                className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors disabled:cursor-not-allowed ${
+                  handoffEnabled ? "bg-[#00a884]" : "bg-[#cad0d5]"
+                }`}
+              >
+                <span
+                  className={`block h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
+                    handoffEnabled ? "translate-x-4" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
+          ) : null}
+
           <div className="hidden items-center gap-1 sm:flex">
             <IconAction label="Video call">
               <Video className="h-5 w-5" />
