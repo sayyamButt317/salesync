@@ -1,4 +1,5 @@
 import useAuthStore from '../store/AuthStore/authStore';
+import { useChatStore } from '../store/chatStore';
 
 
 export const setAuthTokenProvider = (token: string, role: string) => {
@@ -25,8 +26,10 @@ export const clearAuthTokenProvider = () => {
     if (typeof window !== 'undefined') {
         document.cookie = 'access_token=; path=/; max-age=0';
         document.cookie = 'role=; path=/; max-age=0';
+        localStorage.removeItem('AuthStorage');
     }
     useAuthStore.getState().clearAuth();
+    useChatStore.getState().clearAll();
 };
 
 export const getAuthRoleProvider = () => {

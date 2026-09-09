@@ -16,7 +16,6 @@ import {
   Tabs,
 } from "@/components/ui";
 import {
-  MEETING_TYPE_ICONS,
   SORT_OPTIONS,
   SOURCE_COLORS,
   SOURCE_ICONS,
@@ -106,9 +105,9 @@ export function BookingsTable({
           <thead>
             <tr className="border-b border-gray-50 bg-gray-50/50 text-[10px] font-semibold tracking-wider text-gray-400 uppercase">
               <th className="px-5 py-3">Booking</th>
+              <th className="px-5 py-3">Service</th>
               <th className="px-5 py-3">Contact</th>
               <th className="px-5 py-3">Agent</th>
-              <th className="px-5 py-3">Type</th>
               <th className="px-5 py-3">Date &amp; Time</th>
               <th className="px-5 py-3">Status</th>
               <th className="px-5 py-3">Source</th>
@@ -123,8 +122,8 @@ export function BookingsTable({
           >
             {records.map((record) => {
               const SourceIcon = SOURCE_ICONS[record.source];
-              const MeetingIcon = MEETING_TYPE_ICONS[record.meetingType];
               const isSelected = selectedId === record.id;
+              const serviceLabel = record.service || record.purpose;
 
               return (
                 <motion.tr
@@ -156,9 +155,16 @@ export function BookingsTable({
                             <BookingLabelBadge label={record.label} />
                           ) : null}
                         </div>
-                        <p className="text-xs text-gray-500">{record.purpose}</p>
+                        <p className="text-xs text-gray-500">
+                          {record.date} · {record.time}
+                        </p>
                       </div>
                     </div>
+                  </td>
+                  <td className="px-5 py-3.5">
+                    <span className="inline-flex rounded-full bg-violet-50 px-2.5 py-1 text-xs font-semibold text-violet-700">
+                      {serviceLabel}
+                    </span>
                   </td>
                   <td className="px-5 py-3.5">
                     <p className="text-xs text-gray-700">{record.email}</p>
@@ -173,12 +179,6 @@ export function BookingsTable({
                         {record.agentName}
                       </p>
                     </div>
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <span className="inline-flex items-center gap-1.5 text-xs text-gray-700">
-                      <MeetingIcon className="h-3.5 w-3.5 text-gray-400" />
-                      {record.meetingType}
-                    </span>
                   </td>
                   <td className="px-5 py-3.5">
                     <p className="text-xs font-medium text-gray-800">

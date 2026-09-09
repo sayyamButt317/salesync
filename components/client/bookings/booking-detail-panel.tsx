@@ -71,7 +71,7 @@ export function BookingDetailPanel({
                     ) : null}
                   </div>
                   <p className="mt-0.5 text-xs text-gray-500">
-                    {booking.purpose}
+                    {booking.service || booking.purpose}
                   </p>
                 </div>
               </div>
@@ -173,11 +173,18 @@ export function BookingDetailPanel({
 
                 <div className="border-t border-gray-100 pt-4">
                   <h3 className="mb-2 text-xs font-bold tracking-wide text-gray-400 uppercase">
-                    Meeting Purpose
+                    Service
                   </h3>
-                  <p className="text-sm leading-relaxed text-gray-600">
-                    {booking.purposeDescription}
+                  <p className="text-sm font-semibold text-gray-900">
+                    {booking.service || booking.purpose}
                   </p>
+                  {booking.purposeDescription &&
+                  booking.purposeDescription !==
+                    (booking.service || booking.purpose) ? (
+                    <p className="mt-1 text-sm leading-relaxed text-gray-600">
+                      {booking.purposeDescription}
+                    </p>
+                  ) : null}
                 </div>
               </motion.div>
             ) : detailTab === "notes" ? (

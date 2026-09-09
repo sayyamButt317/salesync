@@ -28,7 +28,7 @@ export const CLIENT_NAV_ITEMS: ClientNavItem[] = [
   },
   { id: "agents", label: "My Agents", href: "/client/agents", icon: Bot },
   { id: "leads", label: "Leads", href: "/client/leads", icon: UserPlus },
-  { id: "conversations", label: "Conversations", href: "#", icon: MessageSquare },
+  { id: "conversations", label: "Conversations", href: "/client/converation", icon: MessageSquare },
   { id: "bookings", label: "Bookings", href: "/client/bookings", icon: CalendarCheck },
   { id: "ugc", label: "UGC Submissions", href: "#", icon: Video },
   { id: "analytics", label: "Analytics", href: "#", icon: BarChart3 },

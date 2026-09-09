@@ -1,3 +1,5 @@
+"use client";
+
 import { BookingsPage } from "@/components/client/bookings";
 
 export default function ClientBookingsRoute() {

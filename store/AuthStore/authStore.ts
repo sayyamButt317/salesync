@@ -60,6 +60,7 @@ const useAuthStore = create<AuthStore>()(
             isAuthenticated: false,
             user_id: '',
             company_name: '',
+            company_user_id: '',
             role:'',
             tenant_id:'',
             tenant_slug:'',    

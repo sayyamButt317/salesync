@@ -45,6 +45,7 @@ export interface BookingRecord {
   name: string;
   email: string;
   phone: string;
+  service?: string;
   purpose: string;
   purposeDescription: string;
   label?: BookingLabel;

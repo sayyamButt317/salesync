@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Bell,
   Calendar,
   ChevronDown,
+  LogOut,
   Plus,
   SlidersHorizontal,
 } from "lucide-react";
@@ -12,6 +14,7 @@ import { motion } from "framer-motion";
 import { Avatar, Button, IconButton } from "@/components/ui";
 import { DATE_RANGE_LABEL } from "@/lib/client-dashboard/data";
 import { fadeUp } from "@/lib/motion/variants";
+import { clearAuthTokenProvider } from "@/provider/auth-provide";
 
 export interface ClientDashboardHeaderProps {
   userName?: string;
@@ -20,6 +23,13 @@ export interface ClientDashboardHeaderProps {
 export function ClientDashboardHeader({
   userName = "Sayyam",
 }: ClientDashboardHeaderProps) {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    clearAuthTokenProvider();
+    router.replace("/login");
+  };
+
   return (
     <motion.div
       initial="hidden"
@@ -63,6 +73,15 @@ export function ClientDashboardHeader({
           <Bell className="h-[18px] w-[18px]" />
         </IconButton>
         <Avatar initials="SJ" size="md" className="h-10 w-10" />
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+          aria-label="Logout"
+        >
+          <LogOut className="h-4 w-4" />
+          Logout
+        </button>
       </div>
     </motion.div>
   );
