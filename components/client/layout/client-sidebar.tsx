@@ -2,7 +2,6 @@
 
 import { ChevronDown, Zap } from "lucide-react";
 import { motion } from "framer-motion";
-import { ProgressBar } from "@/components/ui";
 import { CLIENT_PROFILE } from "@/lib/client-dashboard/data";
 import { CLIENT_NAV_ITEMS } from "@/lib/client-dashboard/navigation";
 import { slideInLeft } from "@/lib/motion/variants";
@@ -42,31 +41,7 @@ export function ClientSidebar({ activeNavId = "dashboard" }: ClientSidebarProps)
         ))}
       </nav>
 
-      <div className="space-y-3 border-t border-gray-100 p-3">
-        <div className="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
-          <div className="flex items-center justify-between text-[11px]">
-            <span className="font-semibold text-gray-700">AI Credits</span>
-            <span className="text-gray-400">
-              {CLIENT_PROFILE.creditsUsed.toLocaleString()} /{" "}
-              {CLIENT_PROFILE.creditsTotal.toLocaleString()}
-            </span>
-          </div>
-          <ProgressBar
-            value={CLIENT_PROFILE.creditsUsed}
-            max={CLIENT_PROFILE.creditsTotal}
-            className="mt-2"
-          />
-          <div className="mt-2 flex items-center justify-between text-[10px]">
-            <button
-              type="button"
-              className="cursor-pointer font-semibold text-violet-600 hover:text-violet-700"
-            >
-              {CLIENT_PROFILE.plan}
-            </button>
-            <span className="text-gray-400">{CLIENT_PROFILE.renewalDate}</span>
-          </div>
-        </div>
-
+      <div className="border-t border-gray-100 p-3">
         <div className="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-600 text-xs font-bold text-white">

@@ -18,6 +18,13 @@ export const metadata: Metadata = {
   title: "Salesync — AI Employees That Work 24/7",
   description:
     "Configure AI employees that qualify leads, book meetings, and follow up automatically. Start free in minutes.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
