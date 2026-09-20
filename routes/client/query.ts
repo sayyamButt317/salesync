@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { CompanyBookingByIdApi, ConversationByThreadId, ConversationList } from "./routes";
+import { CompanyBookingByIdApi, ConnectGoogleBusinessAccountApi, ConversationByThreadId, ConversationList } from "./routes";
 
 
 export const useConversationList = () => {
@@ -24,3 +24,13 @@ export const useCompanyBookingByIdQuery = (company_id: string) => {
         enabled: Boolean(company_id),
     });
 }
+
+
+
+export const useConnectGoogleBusinessAccountQuery = () => {
+    return useQuery({
+      queryKey: ["connectGoogleBusinessAccount"],
+      queryFn: () => ConnectGoogleBusinessAccountApi(),
+      enabled: true,
+    });
+  }

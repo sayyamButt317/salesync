@@ -3,7 +3,7 @@ export const UserEndpoint = {
 CONVERSATIONS: "/company/conversations",
 CONVERSATIONS_BY_THREAD_ID: (thread_id: string) => `/company/conversations/${thread_id}`,
 
-	
+
 DELETE_CONVERSATION: (thread_id: string) => `/company/conversations/${thread_id}`,
 DELETEMESSAGES_BY_MESSAGE_ID: (message_id: string) => `/company/messages/${message_id}`,
 
@@ -16,5 +16,18 @@ AGENT:{
 SKINCLINIC_AGENT: `/agents/aesthetic-agent`,
 GOOGLEREVIEW_AGENT: `/agents/google-review-agent`,
 REALESTATE_AGENT: `/agents/realestate-agent`,
+LINKEDIN_AGENT: `/agents/linkedin-agent`,
+},
+
+CONNECTORS:{
+GOOGLE_BUSINESS_ACCOUNT: `/connectors/google-business`,
+MICROSOFT_BUSINESS_ACCOUNT: `/connectors/microsoft-business`,
+GOOGLE_DRIVE: `/connectors/google-drive`,
+INSTAGRAM: `/connectors/instagram`,
+LINKEDIN: `/connectors/linkedin`,
+SLACK: `/connectors/slack`,
+ZAPIER: `/connectors/zapier`,
+SALESFORCE: `/connectors/salesforce`,
+
 },
 }

@@ -74,3 +74,8 @@ export async function CompanyBookingByIdApi(company_id: string) {
     const response = await api.get(UserEndpoint.COMPANY_BOOKING_BY_ID(company_id));
     return response.data;
 }
+
+export async function ConnectGoogleBusinessAccountApi() {
+    const response = await api.get(UserEndpoint.CONNECTORS.GOOGLE_BUSINESS_ACCOUNT);
+    return response.data;
+}

@@ -6,6 +6,7 @@ import {
   FileText,
   LayoutDashboard,
   MessageSquare,
+  Plug,
   Send,
   Settings,
   Timer,
@@ -27,6 +28,7 @@ export const NAV_ITEMS: NavItem[] = [
   { id: "tasks", label: "Tasks", href: "/tasks", icon: CheckSquare },
   { id: "templates", label: "Templates", href: "/templates", icon: FileText },
   { id: "reports", label: "Reports", href: "/reports", icon: BarChart3 },
+  { id: "integrations", label: "Integrations", href: "/integrations", icon: Plug },
   { id: "settings", label: "Settings", href: "/settings", icon: Settings },
 ];
 
